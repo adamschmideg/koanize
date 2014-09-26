@@ -2,12 +2,21 @@
   (require 
     [clojure.test :refer :all]))
 
-(defn report2
-  [m]
-  (case (:type m)
-    :fail (do (println "debug" *report-counters*) "just fail")
-    :error (do (println m) (throw (Exception. (str "error" ))))
-    nil))
+(defmethod report :fail [m]
+  (when (successful? @*report-counters*)
+    (with-test-out
+      (inc-report-counter :fail)
+      (print "You are sitting on" (testing-vars-str m) "contemplating")
+      (when (seq *testing-contexts*) (println (str " on \"" (testing-contexts-str) "\"")))
+      ;(when-let [message (:message m)] (println "on" message))
+      (println (str "Meditate on how `" (pr-str (:actual m)) "` will become `" (pr-str (:expected m)) "`")))))
+
+(defmethod report :summary [m]
+  (with-test-out
+    (when-not (zero? (:pass m))
+      (println "\nYou've already made" (:pass m) "steps..."))))
+
+(defmethod report :begin-test-ns [m])
 
 (defn test-all-vars-until-successful
   "Calls test-var on every var interned in the namespace, with fixtures."
@@ -25,7 +34,7 @@
 (defn meditate
   [& namespaces]
   (with-redefs [test-all-vars test-all-vars-until-successful]
-    (try
-      ;(apply require namespaces)
-      (apply run-tests namespaces)
-      (catch Exception e (println e)))))
+        (doseq [ns namespaces]
+          (require ns :reload))
+        (apply run-tests namespaces))
+    nil)
