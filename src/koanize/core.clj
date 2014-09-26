@@ -1,6 +1,17 @@
-(ns koanize.core)
+(ns koanize.core
+  (require 
+    [clojure.test :refer :all]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn report2
+  [m]
+  (case (:type m)
+    :fail (throw (Exception."failed" m))
+    :error (throw (Exception. "error" m))
+    nil))
+
+(defn meditate
+  []
+  (with-redefs [report report2]
+    (try
+      (run-tests)
+      (catch Exception e (println e)))))
