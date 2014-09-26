@@ -5,13 +5,13 @@
 (defn report2
   [m]
   (case (:type m)
-    :fail (throw (Exception."failed" m))
-    :error (throw (Exception. "error" m))
+    :fail (throw (Exception. (str "failed" )))
+    :error (do (println m) (throw (Exception. (str "error" ))))
     nil))
 
 (defn meditate
-  []
+  [& namespaces]
   (with-redefs [report report2]
     (try
-      (run-tests)
+      (apply run-tests namespaces)
       (catch Exception e (println e)))))
