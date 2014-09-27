@@ -1,4 +1,4 @@
-(ns koanize.sample-test
+(ns koanize.sample-for-meditate
   (:require [clojure.test :refer :all]))
 
 (deftest first-failure

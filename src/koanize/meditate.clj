@@ -1,4 +1,4 @@
-(ns koanize.core
+(ns koanize.meditate
   (require 
     [clojure.test :refer :all]))
 
@@ -14,7 +14,8 @@
 (defmethod report :summary [m]
   (with-test-out
     (when-not (zero? (:pass m))
-      (println "\nYou've already made" (:pass m) "steps..."))))
+      ;(println "\nYou've already made" (:pass m) "steps...")
+      )))
 
 (defmethod report :begin-test-ns [m])
 
