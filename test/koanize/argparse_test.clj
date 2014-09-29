@@ -39,4 +39,13 @@
           :TWO [:a :b],
           :THREE [:d :e :f]})))
 
+(testing "argparse"
+  (is (= (argparse [{:short "-a", :count 0},
+                    {:short "-b", :count 0},
+                    {:short "-c", :count 1}]
+                   ["-a" "-c" "foo" "-b"])
+         {:good {"-a" [],
+                 "-b" [],
+                 "-c" ["foo"]}})))
+
 (run-tests)
