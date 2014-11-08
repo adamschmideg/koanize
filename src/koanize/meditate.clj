@@ -1,5 +1,5 @@
 (ns koanize.meditate
-  (require 
+  (require
     [clojure.test :refer :all]))
 
 (defmethod report :fail [m]
