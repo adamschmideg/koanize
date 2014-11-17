@@ -3,17 +3,18 @@
     [clojure.test :refer :all]
     [koanize.argparse :refer :all]))
 
-(testing "group-by-count-test"
-  (is (= (group-by-count 2 [:a :b :c :d])
-         [[:a :b] [:c :d]]))
-  (is (= (group-by-count 1 [:a :b :c])
-         [[:a] [:b] [:c]]))
-  (is (= (group-by-count 2 [:a :b :c])
-         [[:a :b]])
-      "Rest is discarded")
-  (is (= (group-by-count 9 [:a :b :c])
-         [])
-      "Empty if count is more than the length of the collection"))
+(deftest group-by-count-test
+  (testing "group-by-count-test"
+    (is (= (group-by-count 2 [:a :b :c :d])
+           [[:a :b] [:c :d]]))
+    (is (= (group-by-count 1 [:a :b :c])
+           [[:a] [:b] [:c]]))
+    (is (= (group-by-count 2 [:a :b :c])
+           [[:a :b]])
+        "Rest is discarded")
+    (is (= (group-by-count 9 [:a :b :c])
+           [])
+        "Empty if count is more than the length of the collection")))
 
 (testing "group-by-counts-test"
   (is (= (group-by-counts [2 2] [:a :b :c :d])
@@ -48,4 +49,4 @@
                  "-b" [],
                  "-c" ["foo"]}})))
 
-(run-tests)
+;(run-tests)
